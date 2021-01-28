@@ -8,7 +8,7 @@ router.use(express.json());
 // router.get('/', kontroler.showSignature);
 
 router.post('/novi', kontroler.newSignature);
-router.get('/login/:name/:pass', kontroler.login);
+router.post('/login', kontroler.login);
 router.get('/logout', kontroler.logout);
 router.get('/load', kontroler.load);
 

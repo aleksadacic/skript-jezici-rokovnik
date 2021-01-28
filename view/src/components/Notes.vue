@@ -78,10 +78,11 @@ export default {
         if (!response.ok)
           throw response;
         return response.json();
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
         this.notes = [];
         for(let i = 0; i < jsonData.length; i++) {
           this.notes.push(jsonData[i]);
+          console.log("note " + jsonData[i].id)
         }
         this.text = "";
       }).catch((error) => {
@@ -100,11 +101,11 @@ export default {
       }
     },
     initialFetch: function () {
-      fetch('http://localhost:3000/notes/' + this.iduser, { method: 'get' }).then((response) => {
+      fetch('http://localhost:3000/notes', { method: 'get' }).then((response) => {
         if (!response.ok)
           throw response;
         return response.json()
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
         for(let i = 0; i < jsonData.length; i++) {
           console.log(jsonData[i]);
           this.notes.push(jsonData[i]);

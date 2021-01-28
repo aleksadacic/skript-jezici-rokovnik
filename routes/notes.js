@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.get('/:id', kontroler.showNotes);
+router.get('/', kontroler.showNotes);
 
 router.post('/novi', kontroler.newNote);
 router.post('/delete', kontroler.deleteNote);

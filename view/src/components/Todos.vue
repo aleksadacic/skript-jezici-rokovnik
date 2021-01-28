@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="all-todos">
-      <Todo v-for="todo in todos" :key="todo.id"  :idtodos="todo.idtodos" :checked="todo.done" :time="todo.time" :text="todo.text" @deleteUpdate="delUpdate" @updateTodos="upTodo"></Todo>
+      <Todo v-for="todo in todos" :key="todo.id"  :id="todo.id" :checked="todo.done" :time="todo.time" :text="todo.text" @deleteUpdate="delUpdate" @updateTodos="upTodo"></Todo>
     </div>
   </div>
 </template>
@@ -55,7 +55,7 @@ name: "Todos",
         if (!response.ok)
           throw response;
         return response.json();
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
         this.todos = [];
         for(let i = 0; i < jsonData.length; i++) {
           this.todos.push(jsonData[i]);
@@ -75,7 +75,7 @@ name: "Todos",
     delUpdate( id ) {
       let tmp = -1;
       for (let i = 0; i < this.todos.length; i++) {
-        if (this.todos[i].idtodos === id)
+        if (this.todos[i].id === id)
           tmp = i;
       }
       this.todos.splice(tmp,1);
@@ -83,18 +83,18 @@ name: "Todos",
     upTodo(id, checked) {
       let x = checked? 1: 0;
       for (let i = 0; i < this.todos.length; i++) {
-        if (this.todos[i].idtodos === id){
+        if (this.todos[i].id === id){
           this.todos[i].done = x;
         }
       }
     },
     initialFetch: function () {
       console.log("initfetch" + this.iduser);
-      fetch('http://localhost:3000/todos/' + this.iduser, { method: 'get' }).then((response) => {
+      fetch('http://localhost:3000/todos', { method: 'get' }).then((response) => {
         if (!response.ok)
           throw response;
         return response.json()
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
         for(let i = 0; i < jsonData.length; i++) {
           console.log(jsonData[i]);
           this.todos.push(jsonData[i]);

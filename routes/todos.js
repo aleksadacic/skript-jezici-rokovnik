@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.get('/:id', kontroler.showTodos);
+router.get('/', kontroler.showTodos);
 router.post('/novi', kontroler.newTodo);
 router.post('/delete', kontroler.deleteTodo);
 router.post('/update', kontroler.updateTodo);

@@ -72,7 +72,7 @@
         day.style.fontWeight = "bold";
       },
       del: function (note) {
-        if (note.idnotes === -1) {
+        if (note.id === -1) {
           return;
         }
         fetch('http://localhost:3000/notes/delete', {
@@ -80,12 +80,12 @@
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({idnotes: note.idnotes, iduser: this.iduser})
+          body: JSON.stringify({idnotes: note.id, iduser: this.iduser})
         }).then((response) => {
           if (!response.ok)
             throw response;
           return response.json();
-        }).then((jsonData) => {
+        }).then(({ jsonData }) => {
           this.array = [];
           for(let i = 0; i < jsonData.length; i++) {
               this.array.push(jsonData[i]);
@@ -101,20 +101,21 @@
         });
       },
       update: function (txt, note) {
-        if (note.idnotes === -1) {
+        if (note.id === -1) {
           return;
         }
+        console.log(note.id)
         fetch('http://localhost:3000/notes/update', {
           method: 'post',
               headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({text: txt, idnotes: note.idnotes, iduser: this.iduser})
+          body: JSON.stringify({text: txt, idnotes: note.id, iduser: this.iduser})
         }).then((response) => {
           if (!response.ok)
             throw response;
           return response.json();
-        }).then((jsonData) => {
+        }).then(({ jsonData }) => {
           this.array = [];
           for(let i = 0; i < jsonData.length; i++) {
               this.array.push(jsonData[i]);

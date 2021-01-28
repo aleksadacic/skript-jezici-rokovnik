@@ -33,13 +33,19 @@ export default new Vuex.Store({
   },
   actions: {
     login_user: function ({ commit, getters }, vals) {
-      fetch('http://localhost:3000/signature/login/' + vals.name + "/" + vals.pass, {method: 'get'}).then((response) => {
+      fetch('http://localhost:3000/signature/login', 
+        {method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name: vals.name, password: vals.pass})
+      }).then((response) => {
         if (!response.ok)
           throw response;
         return response.json()
-      }).then((jsonData) => {
-        commit('set_userid', jsonData.iduser);
-        router.push({ name: 'Planner', params: { iduser: jsonData.iduser, name: vals.name }});
+      }).then(({ jsonData }) => {
+        commit('set_userid', jsonData.id);
+        router.push({ name: 'Planner', params: { iduser: jsonData.id, name: vals.name }});
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
@@ -61,9 +67,9 @@ export default new Vuex.Store({
           throw response;
         }
         return response.json();
-      }).then((jsonData) => {
-        commit('set_userid', jsonData.iduser);
-        router.push({ name: 'Planner', params: { iduser: jsonData.iduser, name: vals.name }});
+      }).then(({ jsonData }) => {
+        commit('set_userid', jsonData.id);
+        router.push({ name: 'Planner', params: { iduser: jsonData.id, name: vals.username }});
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
@@ -78,7 +84,7 @@ export default new Vuex.Store({
         if (!response.ok)
           throw response;
         return response.json()
-      }).then((jsonData) => {
+      }).then(({jsonData}) => {
         commit('reinit_userid');
         commit('reinit_name');
         router.push({name: 'Account'});
@@ -96,10 +102,10 @@ export default new Vuex.Store({
         if (!response.ok)
           throw response;
         return response.json()
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
           console.log(jsonData);
-          commit('set_userid', jsonData.iduser);
-          commit('set_name', jsonData.name);
+          commit('set_userid', jsonData.id);
+          commit('set_name', jsonData.username);
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {

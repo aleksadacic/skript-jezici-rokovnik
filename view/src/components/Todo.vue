@@ -19,7 +19,7 @@ name: "Todo",
   props: {
     time: String,
     text: String,
-    idtodos: Number,
+    id: Number,
     checked: Number
   },
   data() {
@@ -35,7 +35,7 @@ name: "Todo",
   },
   methods: {
     del: function () {
-      if (this.idtodos === -1) {
+      if (this.id === -1) {
         alert("Couldn't fetch from api!");
         return;
       }
@@ -45,13 +45,13 @@ name: "Todo",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({idtodos: this.idtodos, iduser: this.iduser})
+        body: JSON.stringify({idtodos: this.id, iduser: this.iduser})
       }).then((response) => {
         if (!response.ok)
           throw response;
         return response.json();
-      }).then((jsonData) => {
-        this.$emit('deleteUpdate', this.idtodos);
+      }).then(({ jsonData }) => {
+        this.$emit('deleteUpdate', this.id);
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
@@ -62,7 +62,7 @@ name: "Todo",
       });
     },
     update: function () {
-      if (this.idtodos === -1) {
+      if (this.id === -1) {
         alert("Couldn't fetch from api!");
         return;
       }
@@ -71,17 +71,17 @@ name: "Todo",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({done: this.toggle, idtodos: this.idtodos})
+        body: JSON.stringify({done: this.toggle, idtodos: this.id})
       }).then((response) => {
         if (!response.ok)
           throw response;
         return response.json();
-      }).then((jsonData) => {
+      }).then(({ jsonData }) => {
         let array = [];
         for (let i = 0; i < jsonData.length; i++) {
           array.push(jsonData[i]);
         }
-        this.$emit('refreshTodos', this.idtodos, this.toggle);
+        this.$emit('refreshTodos', this.id, this.toggle);
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
